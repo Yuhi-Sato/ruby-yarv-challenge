@@ -12,6 +12,14 @@ dist
 dist-ssr
 *.local
 
+# Ruby
+.ruby-version
+
+# wasm build artifacts
+public/ruby+yruby.wasm
+build/build/
+build/rubies/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
