@@ -30,7 +30,7 @@ export function StepNav({ currentStep, completedSteps, onStepChange }: StepNavPr
                 onClick={() => onStepChange(step.id)}
                 className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium transition-colors ${
                   isActive
-                    ? 'ring-2 ring-violet-500 bg-violet-50 dark:bg-violet-900/30 text-violet-700 dark:text-violet-300'
+                    ? 'ring-2 ring-ruby-500 bg-ruby-50 dark:bg-ruby-900/30 text-ruby-700 dark:text-ruby-300'
                     : isCompleted
                       ? 'bg-green-500 text-white'
                       : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400'

@@ -26,7 +26,7 @@ export function Layout({ left, center, right }: LayoutProps) {
             key={tab.id}
             className={`flex-1 px-4 py-2 text-sm font-medium transition-colors ${
               activeTab === tab.id
-                ? 'text-violet-600 dark:text-violet-400 border-b-2 border-violet-600 dark:border-violet-400'
+                ? 'text-ruby-600 dark:text-ruby-400 border-b-2 border-ruby-600 dark:border-ruby-400'
                 : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'
             }`}
             onClick={() => setActiveTab(tab.id)}

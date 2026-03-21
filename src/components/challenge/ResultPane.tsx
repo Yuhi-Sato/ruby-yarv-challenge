@@ -150,7 +150,7 @@ export function ResultPane({ result, expectedBytecode, onNextStep, isLastStep }:
             <button
               type="button"
               onClick={onNextStep}
-              className="w-full bg-violet-600 hover:bg-violet-700 text-white font-medium py-2 px-4 rounded-lg transition-colors text-sm"
+              className="w-full bg-ruby-600 hover:bg-ruby-700 text-white font-medium py-2 px-4 rounded-lg transition-colors text-sm"
             >
               Next Step
             </button>
@@ -158,14 +158,14 @@ export function ResultPane({ result, expectedBytecode, onNextStep, isLastStep }:
 
           {/* Celebration */}
           {result.allPassed && isLastStep && (
-            <div className="bg-gradient-to-r from-violet-100 to-purple-100 dark:from-violet-900/30 dark:to-purple-900/30 rounded-lg p-4 text-center space-y-2">
-              <div className="text-lg font-bold text-violet-700 dark:text-violet-300">
+            <div className="bg-gradient-to-r from-ruby-100 to-ruby-50 dark:from-ruby-900/30 dark:to-ruby-800/20 rounded-lg p-4 text-center space-y-2">
+              <div className="text-lg font-bold text-ruby-700 dark:text-ruby-300">
                 Congratulations!
               </div>
               <p className="text-sm text-gray-700 dark:text-gray-300">
                 You implemented a Ruby VM and compiler from scratch!
               </p>
-              <p className="text-sm font-mono font-bold text-violet-600 dark:text-violet-400">
+              <p className="text-sm font-mono font-bold text-ruby-600 dark:text-ruby-400">
                 fib(10) = 55
               </p>
             </div>

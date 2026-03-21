@@ -66,7 +66,7 @@ function App() {
           <TutorialPane step={currentStep} result={null} />
           <div className="mt-6 text-center">
             <button
-              className="px-8 py-3 bg-violet-600 hover:bg-violet-700 text-white font-medium rounded-lg transition-colors text-lg"
+              className="px-8 py-3 bg-ruby-600 hover:bg-ruby-700 text-white font-medium rounded-lg transition-colors text-lg"
               onClick={() => goToStep(1)}
             >
               Start Challenge

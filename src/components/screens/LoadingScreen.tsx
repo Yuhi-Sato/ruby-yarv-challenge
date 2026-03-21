@@ -21,7 +21,7 @@ export function LoadingScreen() {
 
       <div className="flex items-center gap-3">
         <svg
-          className="animate-spin h-5 w-5 text-violet-600"
+          className="animate-spin h-5 w-5 text-ruby-600"
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"

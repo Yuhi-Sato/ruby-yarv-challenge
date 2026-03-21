@@ -27,7 +27,7 @@ function TutorialPaneInner({ step, result }: TutorialPaneProps) {
                 {tc.source}
               </code>
               <span className="text-gray-400">&rarr;</span>
-              <code className="text-sm font-mono font-semibold text-violet-600 dark:text-violet-400">
+              <code className="text-sm font-mono font-semibold text-ruby-600 dark:text-ruby-400">
                 {String(tc.expected)}
               </code>
             </div>
@@ -83,7 +83,7 @@ function TutorialPaneInner({ step, result }: TutorialPaneProps) {
                   ['vm.self_value', 'Current self object'],
                 ].map(([sig, desc]) => (
                   <div key={sig} className="grid grid-cols-[auto_1fr] gap-x-3">
-                    <code className="font-mono text-violet-600 dark:text-violet-400 whitespace-nowrap">
+                    <code className="font-mono text-ruby-600 dark:text-ruby-400 whitespace-nowrap">
                       {sig}
                     </code>
                     <span className="text-gray-600 dark:text-gray-400">{desc}</span>
@@ -104,7 +104,7 @@ function TutorialPaneInner({ step, result }: TutorialPaneProps) {
                   ['YRuby::Iseq.iseq_new_method(node)', 'Create method iseq from DefNode'],
                 ].map(([sig, desc]) => (
                   <div key={sig} className="grid grid-cols-[auto_1fr] gap-x-3">
-                    <code className="font-mono text-violet-600 dark:text-violet-400 whitespace-nowrap">
+                    <code className="font-mono text-ruby-600 dark:text-ruby-400 whitespace-nowrap">
                       {sig}
                     </code>
                     <span className="text-gray-600 dark:text-gray-400">{desc}</span>
