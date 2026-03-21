@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm create:*)",
+      "Bash(cp -r /tmp/vite-scaffold/my-app/* /Users/y-sato/ruby-yarv-challenge/)",
+      "Bash(cp /tmp/vite-scaffold/my-app/.gitignore /Users/y-sato/ruby-yarv-challenge/)"
+    ]
+  }
+}
