@@ -132,6 +132,33 @@ function TutorialPaneInner({ step, result }: TutorialPaneProps) {
                 </table>
               </div>
             </div>
+            <div>
+              <h4 className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-1">
+                Compiler API
+              </h4>
+              <div className="bg-gray-50 dark:bg-gray-800 rounded-lg overflow-x-auto">
+                <table className="w-full text-xs">
+                  <thead>
+                    <tr className="border-b border-gray-200 dark:border-gray-700">
+                      <th className="text-left p-2 font-semibold text-gray-500 dark:text-gray-400">Method</th>
+                      <th className="text-left p-2 font-semibold text-gray-500 dark:text-gray-400">Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {[
+                      ['compile_node(iseq, node)', 'Compile any AST node by dispatching to the right method (built-in)'],
+                    ].map(([sig, desc]) => (
+                      <tr key={sig} className="border-b border-gray-100 dark:border-gray-700/50">
+                        <td className="p-2">
+                          <code className="font-mono text-ruby-600 dark:text-ruby-400 whitespace-nowrap">{sig}</code>
+                        </td>
+                        <td className="p-2 text-gray-600 dark:text-gray-400">{desc}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
         </details>
       )}

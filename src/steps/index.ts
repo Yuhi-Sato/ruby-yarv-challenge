@@ -163,33 +163,44 @@ export const STEPS: StepConfig[] = [
         '│  1  │  ← receiver\n' +
         '└─────┘'
       )),
-      h('h3', null, 'Compiler: compile_arguments_node'),
+      h('h3', null, 'How Ruby parses 1 + 2'),
       h('p', null,
         'In Ruby, ', h('code', null, '1 + 2'), ' is actually a method call: ', h('code', null, '1.+(2)'), '. ',
         'Prism parses it as a ', h('code', null, 'CallNode'), ':'
       ),
       h('pre', null, h('code', null,
-        'CallNode\n  receiver: IntegerNode   # left operand\n  name: :+\n  arguments: ArgumentsNode  # right operand'
+        'CallNode\n' +
+        '  .receiver  → IntegerNode(1)    # left operand\n' +
+        '  .name      → :+\n' +
+        '  .arguments → ArgumentsNode     # wraps the right operand\n' +
+        '                 .arguments → [IntegerNode(2)]  # array of child nodes'
       )),
       h('p', null,
-        h('code', null, 'ArgumentsNode'), ' is a container that holds a list of arguments. ',
-        h('code', null, 'node.arguments'), ' returns an array of child nodes.',
+        'Note: ', h('code', null, 'CallNode#arguments'), ' returns an ', h('code', null, 'ArgumentsNode'), ' (a wrapper), and ',
+        h('code', null, 'ArgumentsNode#arguments'), ' returns the actual array of child nodes. The name is the same but they are different things.',
       ),
       h('p', null,
         h('code', null, 'compile_node(iseq, node)'), ' is a built-in method provided by yruby — ', h('strong', null, 'you don\'t need to write it'), '. ',
         'It looks at the node type and dispatches to the right compile method (e.g. ', h('code', null, 'compile_integer_node'), ' for IntegerNode, ',
-        h('code', null, 'compile_arguments_node'), ' for ArgumentsNode). You\'ll use it to recursively compile child nodes.',
+        h('code', null, 'compile_arguments_node'), ' for ArgumentsNode).',
+      ),
+      h('h3', null, 'Compiler: compile_arguments_node'),
+      h('p', null,
+        'This method receives an ', h('code', null, 'ArgumentsNode'), ' and compiles each argument in order. ',
+        'Simply loop over ', h('code', null, 'node.arguments'), ' (the array of child nodes) and call ', h('code', null, 'compile_node'), ' on each one.',
       ),
       h('h3', null, 'Compiler: compile_binary_plus'),
       h('p', null,
         'This method compiles ', h('code', null, '+'), ' expressions like ', h('code', null, '1 + 2'),
-        ' into the instructions that push both values and then run ', h('code', null, 'OptPlus'), '.',
+        '. The call flow looks like this:',
       ),
-      h('ul', null,
-        h('li', null, h('code', null, 'node.receiver'), ' — the left operand (IntegerNode)'),
-        h('li', null, h('code', null, 'node.arguments'), ' — the right operand(s) (ArgumentsNode)'),
-        h('li', null, 'Then emit ', h('code', null, 'OptPlus'), ' to add them'),
-      ),
+      h('pre', null, h('code', null,
+        'compile_binary_plus\n' +
+        '  1. compile_node(iseq, node.receiver)     → pushes 1\n' +
+        '  2. compile_node(iseq, node.arguments)    → dispatches to\n' +
+        '       compile_arguments_node               → pushes 2\n' +
+        '  3. iseq.emit(OptPlus)                    → pops both, pushes 3'
+      )),
     ),
     instructions: 'opt_plus · compile_arguments_node · compile_binary_plus',
     stub: step2Stub,
