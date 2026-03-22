@@ -12,7 +12,7 @@ function TutorialPaneInner({ step, result }: TutorialPaneProps) {
   return (
     <div className="overflow-y-auto h-full p-4 space-y-4">
       {/* Description */}
-      <div className="prose prose-sm dark:prose-invert max-w-none">{step.description}</div>
+      <div className="step-description">{step.description}</div>
 
       {/* Test Cases */}
       {step.testCases.length > 0 && (
@@ -61,7 +61,7 @@ function TutorialPaneInner({ step, result }: TutorialPaneProps) {
 
       {/* API Reference */}
       {step.id !== 0 && (
-        <details className="group">
+        <details className="group" open>
           <summary className="text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-pointer select-none">
             API Reference
           </summary>
@@ -70,46 +70,66 @@ function TutorialPaneInner({ step, result }: TutorialPaneProps) {
               <h4 className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-1">
                 VM API
               </h4>
-              <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-3 space-y-1 text-xs">
-                {[
-                  ['vm.push(x)', 'Push value onto stack'],
-                  ['vm.pop', 'Pop and return top value'],
-                  ['vm.topn(n)', 'Peek nth from top (1 = top)'],
-                  ['vm.env_read(offset)', 'Read local variable at offset from EP'],
-                  ['vm.env_write(offset, v)', 'Write local variable at offset from EP'],
-                  ['vm.add_pc(offset)', 'Adjust PC by relative offset (branches)'],
-                  ['vm.define_method(m, i)', 'Register method iseq on current class'],
-                  ['vm.sendish(cd)', 'Dispatch method call → returns result'],
-                  ['vm.self_value', 'Current self object'],
-                ].map(([sig, desc]) => (
-                  <div key={sig} className="grid grid-cols-[auto_1fr] gap-x-3">
-                    <code className="font-mono text-ruby-600 dark:text-ruby-400 whitespace-nowrap">
-                      {sig}
-                    </code>
-                    <span className="text-gray-600 dark:text-gray-400">{desc}</span>
-                  </div>
-                ))}
+              <div className="bg-gray-50 dark:bg-gray-800 rounded-lg overflow-x-auto">
+                <table className="w-full text-xs">
+                  <thead>
+                    <tr className="border-b border-gray-200 dark:border-gray-700">
+                      <th className="text-left p-2 font-semibold text-gray-500 dark:text-gray-400">Method</th>
+                      <th className="text-left p-2 font-semibold text-gray-500 dark:text-gray-400">Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {[
+                      ['vm.push(x)', 'Push value onto stack'],
+                      ['vm.pop', 'Pop and return top value'],
+                      ['vm.topn(n)', 'Peek nth from top (1 = top)'],
+                      ['vm.env_read(offset)', 'Read local variable at offset from EP'],
+                      ['vm.env_write(offset, v)', 'Write local variable at offset from EP'],
+                      ['vm.add_pc(offset)', 'Adjust PC by relative offset (branches)'],
+                      ['vm.define_method(m, i)', 'Register method iseq on current class'],
+                      ['vm.sendish(cd)', 'Dispatch method call → returns result'],
+                      ['vm.self_value', 'Current self object'],
+                    ].map(([sig, desc]) => (
+                      <tr key={sig} className="border-b border-gray-100 dark:border-gray-700/50">
+                        <td className="p-2">
+                          <code className="font-mono text-ruby-600 dark:text-ruby-400 whitespace-nowrap">{sig}</code>
+                        </td>
+                        <td className="p-2 text-gray-600 dark:text-gray-400">{desc}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
             </div>
             <div>
               <h4 className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-1">
                 Iseq API
               </h4>
-              <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-3 space-y-1 text-xs">
-                {[
-                  ['iseq.emit(Insn, *args)', 'Append instruction'],
-                  ['iseq.emit_placeholder(len)', 'Reserve space for forward-reference patching'],
-                  ['iseq.patch_at!(pc, Insn, offset)', 'Overwrite placeholder with actual instruction'],
-                  ['iseq.size', 'Current iseq size'],
-                  ['YRuby::Iseq.iseq_new_method(node)', 'Create method iseq from DefNode'],
-                ].map(([sig, desc]) => (
-                  <div key={sig} className="grid grid-cols-[auto_1fr] gap-x-3">
-                    <code className="font-mono text-ruby-600 dark:text-ruby-400 whitespace-nowrap">
-                      {sig}
-                    </code>
-                    <span className="text-gray-600 dark:text-gray-400">{desc}</span>
-                  </div>
-                ))}
+              <div className="bg-gray-50 dark:bg-gray-800 rounded-lg overflow-x-auto">
+                <table className="w-full text-xs">
+                  <thead>
+                    <tr className="border-b border-gray-200 dark:border-gray-700">
+                      <th className="text-left p-2 font-semibold text-gray-500 dark:text-gray-400">Method</th>
+                      <th className="text-left p-2 font-semibold text-gray-500 dark:text-gray-400">Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {[
+                      ['iseq.emit(Insn, *args)', 'Append instruction (Insn is a class, e.g. Putobject)'],
+                      ['iseq.emit_placeholder(len)', 'Reserve space for forward-reference patching'],
+                      ['iseq.patch_at!(pc, Insn, offset)', 'Overwrite placeholder with actual instruction'],
+                      ['iseq.size', 'Current iseq size'],
+                      ['YRuby::Iseq.iseq_new_method(node)', 'Create method iseq from DefNode'],
+                    ].map(([sig, desc]) => (
+                      <tr key={sig} className="border-b border-gray-100 dark:border-gray-700/50">
+                        <td className="p-2">
+                          <code className="font-mono text-ruby-600 dark:text-ruby-400 whitespace-nowrap">{sig}</code>
+                        </td>
+                        <td className="p-2 text-gray-600 dark:text-gray-400">{desc}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>

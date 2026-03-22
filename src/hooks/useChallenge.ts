@@ -115,17 +115,15 @@ $test_output << "---START_REPORT---"
 $test_output << runner.report
 $test_output << "---END_REPORT---"
 
-if runner.all_passed?
-  $test_output << "---DISASM_START---"
-  begin
-    ast = YRuby::Parser.new.parse(${JSON.stringify(currentStep.testCases[0]?.source || '')})
-    iseq = YRuby::Iseq.iseq_new_main(ast)
-    $test_output << iseq.disasm
-  rescue => e
-    $test_output << "Error: #{e.message}"
-  end
-  $test_output << "---DISASM_END---"
+$test_output << "---DISASM_START---"
+begin
+  ast = YRuby::Parser.new.parse(${JSON.stringify(currentStep.testCases[0]?.source || '')})
+  iseq = YRuby::Iseq.iseq_new_main(ast)
+  $test_output << iseq.disasm
+rescue => e
+  $test_output << "Error: #{e.message}"
 end
+$test_output << "---DISASM_END---"
 
 $test_output.join("\\n")
         `,

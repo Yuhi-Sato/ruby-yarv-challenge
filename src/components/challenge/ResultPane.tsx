@@ -63,13 +63,17 @@ export function ResultPane({ result, expectedBytecode, onNextStep, isLastStep }:
             {result.allPassed ? 'ALL PASSED' : 'SOME FAILED'}
           </div>
 
-          {/* Actual Bytecode (only when all passed) */}
-          {result.allPassed && result.bytecodeDisasm && (
+          {/* Actual Bytecode */}
+          {result.bytecodeDisasm && (
             <div>
               <h3 className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-1">
                 Actual Bytecode
               </h3>
-              <pre className="bg-gray-900 text-green-400 p-3 rounded font-mono text-xs overflow-x-auto">
+              <pre className={`p-3 rounded font-mono text-xs overflow-x-auto ${
+                result.allPassed
+                  ? 'bg-gray-900 text-green-400'
+                  : 'bg-gray-900 text-amber-400'
+              }`}>
                 {result.bytecodeDisasm}
               </pre>
             </div>

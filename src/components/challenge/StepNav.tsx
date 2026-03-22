@@ -8,8 +8,8 @@ interface StepNavProps {
 
 export function StepNav({ currentStep, completedSteps, onStepChange }: StepNavProps) {
   return (
-    <div className="w-full">
-      <div className="flex items-center overflow-x-auto pb-2">
+    <div className="w-full px-4 py-3">
+      <div className="flex items-center justify-center overflow-x-auto pt-1 pb-2">
         {STEPS.map((step, index) => {
           const isActive = step.id === currentStep
           const isCompleted = completedSteps.includes(step.id) && !isActive
@@ -28,7 +28,7 @@ export function StepNav({ currentStep, completedSteps, onStepChange }: StepNavPr
               <button
                 type="button"
                 onClick={() => onStepChange(step.id)}
-                className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium transition-colors ${
+                className={`relative z-10 w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium transition-colors ${
                   isActive
                     ? 'ring-2 ring-ruby-500 bg-ruby-50 dark:bg-ruby-900/30 text-ruby-700 dark:text-ruby-300'
                     : isCompleted
@@ -42,7 +42,7 @@ export function StepNav({ currentStep, completedSteps, onStepChange }: StepNavPr
                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                   </svg>
                 ) : step.id === 0 ? (
-                  'I'
+                  '0'
                 ) : (
                   step.id
                 )}
@@ -51,7 +51,7 @@ export function StepNav({ currentStep, completedSteps, onStepChange }: StepNavPr
           )
         })}
       </div>
-      <div className="text-sm font-medium text-gray-700 dark:text-gray-300 mt-1">
+      <div className="text-sm font-medium text-gray-700 dark:text-gray-300 mt-1 text-center">
         {STEPS.find((s) => s.id === currentStep)?.title}
       </div>
     </div>
