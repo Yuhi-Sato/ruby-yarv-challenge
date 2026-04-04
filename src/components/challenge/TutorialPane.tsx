@@ -85,7 +85,7 @@ function TutorialPaneInner({ step, result }: TutorialPaneProps) {
                       ['vm.topn(n)', 'Peek nth from top (1 = top)'],
                       ['vm.env_read(offset)', 'Read local variable at offset from EP'],
                       ['vm.env_write(offset, v)', 'Write local variable at offset from EP'],
-                      ['vm.add_pc(offset)', 'Adjust PC by relative offset (branches)'],
+                      ['vm.add_pc(offset)', 'Adjust PC by relative offset'],
                       ['vm.define_method(m, i)', 'Register method iseq on current class'],
                       ['vm.sendish(cd)', 'Dispatch method call → returns result'],
                       ['vm.self_value', 'Current self object'],
