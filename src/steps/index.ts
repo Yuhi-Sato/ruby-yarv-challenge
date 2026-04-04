@@ -386,16 +386,16 @@ export const STEPS: StepConfig[] = [
       h('pre', null, h('code', null, 'insn = iseq.fetch(pc)\npc += insn::LEN    ← PC moves forward first\ninsn.call(vm, ...)  ← then the instruction runs')),
       h('p', null,
         'Branch instructions use ', h('strong', null, 'relative offsets'),
-        ' — they call ', h('code', null, 'vm.add_pc(offset)'), ' to adjust PC from its ', h('em', null, 'current'), ' (already advanced) position.',
+        ' to adjust PC from its current (already advanced) position. Check the ', h('strong', null, 'API Reference'), ' for the VM method that adjusts PC.',
       ),
       h('h3', null, 'Instruction: Branchunless'),
       h('ul', null,
-        h('li', null, 'Pop condition; if ', h('strong', null, 'falsy'), ' (nil or false), call ', h('code', null, 'vm.add_pc(dst)'), ' to jump'),
+        h('li', null, 'Pop condition; if ', h('strong', null, 'falsy'), ' (nil or false), jump by the given offset'),
         h('li', null, 'If truthy, do nothing — PC already points to the next instruction'),
       ),
       h('h3', null, 'Instruction: Jump'),
       h('ul', null,
-        h('li', null, 'Unconditionally call ', h('code', null, 'vm.add_pc(dst)'), ' to jump'),
+        h('li', null, 'Unconditionally jump by the given offset'),
       ),
       h('h3', null, 'Compiler: compile_conditional_node'),
       h('p', null,
@@ -406,35 +406,32 @@ export const STEPS: StepConfig[] = [
         'This is called ', h('strong', null, 'forward-reference patching'), ':',
       ),
       h('ul', null,
-        h('li', null, h('code', null, 'emit_placeholder(Insn::LEN)'), ' — reserves space in the iseq and returns the PC where the placeholder starts'),
+        h('li', null, 'Reserve space in the iseq for the branch instruction (you don\'t know the offset yet)'),
         h('li', null, 'Compile the branch body'),
-        h('li', null, h('code', null, 'patch_at!(placeholder_pc, Insn, offset)'), ' — overwrites the placeholder with the real instruction and offset'),
+        h('li', null, 'Now you know the target — go back and patch the placeholder with the real instruction and offset'),
+      ),
+      h('p', null,
+        'Check the ', h('strong', null, 'Iseq API Reference'), ' for the methods that reserve and patch placeholder space.',
       ),
       h('h3', null, 'Concrete example'),
       h('p', null, 'For ', h('code', null, 'if 3 < 5; 10; else; 20; end'), ':'),
       h('pre', null, h('code', null,
-        '0000 putobject 3          # compile predicate\n' +
+        '0000 putobject 3          # predicate\n' +
         '0002 putobject 5\n' +
         '0004 opt_lt\n' +
-        '0005 branchunless 2       # placeholder_pc=5, patched later\n' +
-        '0007 putobject 10         # compile then-branch\n' +
-        '0009 jump 2               # placeholder_pc=9, patched later\n' +
-        '0011 putobject 20         # compile else-branch\n' +
-        '0013 leave\n' +
-        '\n' +
-        'Branchunless offset: else_pc(11) - (5 + LEN(2)) = 4 … wait,\n' +
-        'the bytecode says 2. That\'s because the offset shown in\n' +
-        'the disasm is the final jump distance from the already-\n' +
-        'advanced PC.'
+        '0005 branchunless 2       # → else branch\n' +
+        '0007 putobject 10         # then-branch\n' +
+        '0009 jump 2               # → end\n' +
+        '0011 putobject 20         # else-branch\n' +
+        '0013 leave'
       )),
       h('p', null,
-        h('strong', null, 'Offset formula: '), h('code', null, 'target_pc - (placeholder_pc + Insn::LEN)'), '. ',
+        h('strong', null, 'Offset calculation: '), 'the offset is the distance from the end of the placeholder to the target. ',
         h('code', null, 'Insn::LEN'), ' is the instruction size (how many slots it occupies in the iseq — typically 2 for branch/jump).',
       ),
       h('p', null,
-        'AST accessors: ', h('code', null, 'node.predicate'), ' (condition), ',
-        h('code', null, 'node.statements'), ' (then-branch), ',
-        h('code', null, 'node.consequent.statements'), ' (else-branch body — ', h('code', null, 'node.consequent'), ' is an ElseNode, so access its ', h('code', null, '.statements'), ' to get the body).',
+        'An ', h('code', null, 'IfNode'), ' has three parts: the condition (predicate), the then-branch, and the else-branch. ',
+        'Explore the node\'s properties to find them.',
       ),
     ),
     instructions: 'branchunless · jump · compile_conditional_node',
