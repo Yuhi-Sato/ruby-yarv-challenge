@@ -315,6 +315,7 @@ export const STEPS: StepConfig[] = [
         h('code', null, 'compile_local_var_write'), ' compiles ', h('code', null, 'Prism::LocalVariableWriteNode'), ' (assignments like ', h('code', null, 'x = 5'), ') into ', h('code', null, 'Dup'), ' + ', h('code', null, 'Setlocal'), '.'
       ),
       h('p', null,
+        h('code', null, 'node.name'), ' returns the variable name as a symbol (e.g. ', h('code', null, ':x'), '). ',
         h('code', null, '@index_lookup_table'), ' is a hash that the compiler maintains automatically — it maps variable names to their offset index (e.g. ', h('code', null, '{ x: 1, y: 0 }'), '). You don\'t need to build it; just read from it.',
       ),
       h('ul', null,
