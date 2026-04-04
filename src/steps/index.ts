@@ -135,7 +135,8 @@ export const STEPS: StepConfig[] = [
     instructions: 'putobject · compile_integer_node',
     stub: step1Stub,
     hints: [
-      'vm.push(x) places a value on top of the stack.\niseq.emit(Insn, *args) appends an instruction to the iseq.',
+      'VM API: vm.push\nCompiler API: iseq.emit — check what argument Putobject needs.',
+      'The integer value lives in node.value.\nPutobject pushes it at runtime; the compiler emits that instruction.',
     ],
     testCases: [
       { description: '42 → 42', source: '42', expected: 42 },
@@ -198,8 +199,8 @@ export const STEPS: StepConfig[] = [
     instructions: 'opt_plus · compile_arguments_node · compile_binary_plus',
     stub: step2Stub,
     hints: [
-      'compile_arguments_node:\n  node.arguments is an array.\n  Compile each child with compile_node.\n\nFor OptPlus, the stack before execution is [1, 2].\nPop two values, push their sum.',
-      'OptPlus:\n  a = vm.pop\n  b = vm.pop\n  vm.push(b + a)\n\ncompile_arguments_node:\n  node.arguments.each { |arg| compile_node(iseq, arg) }\n\ncompile_binary_plus:\n  compile_node(iseq, node.receiver)\n  compile_node(iseq, node.arguments)\n  iseq.emit(OptPlus)',
+      'compile_arguments_node: node.arguments is an array — compile each child.\nOptPlus: pop two values, push the result. Mind the pop order.',
+      'VM API: vm.pop, vm.push\nCompiler API: compile_node, iseq.emit\ncompile_binary_plus handles three parts: receiver, arguments, instruction.',
     ],
     testCases: [
       { description: '1 + 2 = 3', source: '1 + 2', expected: 3 },
@@ -237,8 +238,8 @@ export const STEPS: StepConfig[] = [
     instructions: 'opt_minus · compile_binary_minus',
     stub: step3Stub,
     hints: [
-      'Same stack pattern as Step 2, but compute a - b.\nPop order matters!\n\nThe compiler pattern is identical to compile_binary_plus.',
-      'OptMinus:\n  a = vm.pop\n  b = vm.pop\n  vm.push(b - a)\n\nCompiler:\n  compile_node(iseq, node.receiver)\n  compile_node(iseq, node.arguments)\n  iseq.emit(OptMinus)',
+      'Same pattern as Step 2, but the operation is subtraction.\nPop order matters — think about which operand was pushed first.',
+      'VM API: vm.pop, vm.push\nCompiler: identical structure to compile_binary_plus.',
     ],
     testCases: [
       { description: '10 - 3 = 7', source: '10 - 3', expected: 7 },
@@ -324,8 +325,8 @@ export const STEPS: StepConfig[] = [
     instructions: 'dup · getlocal · setlocal · compile_local_var_read · compile_local_var_write',
     stub: step4Stub,
     hints: [
-      'Dup: peek the top of the stack and push a copy.\n\nGetlocal: read the local and push it.\nSetlocal: pop a value and store it.\n\nIn the compiler, @index_lookup_table[node.name] gives the variable index.',
-      'Dup:\n  vm.push(vm.topn(1))\n\nGetlocal:\n  vm.push(vm.env_read(-idx))\n\nSetlocal:\n  vm.env_write(-idx, vm.pop)\n\ncompile_local_var_write:\n  compile node.value\n  emit Dup\n  emit Setlocal with the index',
+      'Dup: look at vm.topn in the API Reference.\nGetlocal / Setlocal: use vm.env_read / vm.env_write with a negative offset.',
+      'In the compiler, @index_lookup_table[node.name] gives the variable index.\ncompile_local_var_write needs Dup so the assigned value stays on the stack.',
     ],
     testCases: [
       { description: 'x = 5; x → 5', source: 'x = 5; x', expected: 5 },
@@ -356,8 +357,8 @@ export const STEPS: StepConfig[] = [
     instructions: 'opt_lt · compile_binary_lt',
     stub: step5Stub,
     hints: [
-      'Same stack pattern as OptPlus / OptMinus,\nbut push the boolean result of a < b.\n\nThe compiler pattern is identical to Steps 2 and 3.',
-      'OptLt:\n  a = vm.pop\n  b = vm.pop\n  vm.push(b < a)\n\nCompiler:\n  compile_node(iseq, node.receiver)\n  compile_node(iseq, node.arguments)\n  iseq.emit(OptLt)',
+      'Same stack pattern as OptPlus / OptMinus, but push a boolean.\nCompiler pattern is identical to Steps 2–3.',
+      'VM API: vm.pop, vm.push\nCompiler API: compile_node, iseq.emit',
     ],
     testCases: [
       { description: '3 < 5 → true', source: '3 < 5', expected: true },
@@ -438,9 +439,9 @@ export const STEPS: StepConfig[] = [
     instructions: 'branchunless · jump · compile_conditional_node',
     stub: step6Stub,
     hints: [
-      'Branchunless: pop the condition, if falsy call vm.add_pc(dst).\nJump: always call vm.add_pc(dst).\n\nBoth instructions are one-liners!',
-      'For the compiler, the key APIs are:\n\n  placeholder_pc = iseq.emit_placeholder(Branchunless::LEN)\n  # ... compile some code ...\n  target_pc = iseq.size\n  offset = target_pc - (placeholder_pc + Branchunless::LEN)\n  iseq.patch_at!(placeholder_pc, Branchunless, offset)\n\nemit_placeholder returns the PC where space was reserved.\npatch_at! fills it with the real instruction + offset.',
-      'Compiler steps:\n  1. compile_node(iseq, node.predicate)\n  2. branch_pc = iseq.emit_placeholder(Branchunless::LEN)\n  3. compile_node(iseq, node.statements)\n  4. jump_pc = iseq.emit_placeholder(Jump::LEN)\n  5. else_pc = iseq.size\n     iseq.patch_at!(branch_pc, Branchunless,\n       else_pc - (branch_pc + Branchunless::LEN))\n  6. compile_node(iseq, node.consequent.statements)\n  7. end_pc = iseq.size\n     iseq.patch_at!(jump_pc, Jump,\n       end_pc - (jump_pc + Jump::LEN))',
+      'Branchunless: pop the condition, if falsy use vm.add_pc.\nJump: always use vm.add_pc. Both are one-liners.',
+      'Compiler API: iseq.emit_placeholder, iseq.patch_at!, iseq.size\nReserve space first, compile the body, then patch with the calculated offset.',
+      'Offset formula: target_pc - (placeholder_pc + Insn::LEN)\nPattern: predicate → branch → then-body → jump → else-body → end',
     ],
     testCases: [
       { description: 'true branch', source: 'if 3 < 5; 10; else; 20; end', expected: 10 },
@@ -497,8 +498,8 @@ export const STEPS: StepConfig[] = [
     instructions: 'definemethod · opt_send_without_block · compile_def_node · compile_general_call',
     stub: step7Stub,
     hints: [
-      'Definemethod:\n  vm.define_method(mid, iseq)\n\nOptSendWithoutBlock:\n  vm.sendish(cd)\n\ncompile_def_node:\n  create method iseq with YRuby::Iseq.iseq_new_method(node)\n  emit Definemethod(node.name, method_iseq)\n  emit Putobject(node.name)',
-      'compile_general_call:\n  emit Putself\n  compile each argument with compile_node\n  emit OptSendWithoutBlock with\n    YRuby::CallData.new(\n      mid: node.name,\n      argc: node.arguments.arguments.length\n    )',
+      'Definemethod: vm.define_method\nOptSendWithoutBlock: vm.sendish',
+      'compile_def_node: use YRuby::Iseq.iseq_new_method to create the method iseq.\ncompile_general_call: emit Putself first, compile args, then emit the call with CallData.',
     ],
     testCases: [
       {
