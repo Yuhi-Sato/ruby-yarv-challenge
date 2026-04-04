@@ -419,7 +419,7 @@ export const STEPS: StepConfig[] = [
         '0000 putobject 3          # predicate\n' +
         '0002 putobject 5\n' +
         '0004 opt_lt\n' +
-        '0005 branchunless 2       # → else branch\n' +
+        '0005 branchunless 4       # → else branch\n' +
         '0007 putobject 10         # then-branch\n' +
         '0009 jump 2               # → end\n' +
         '0011 putobject 20         # else-branch\n' +
@@ -447,7 +447,7 @@ export const STEPS: StepConfig[] = [
       { description: 'true branch', source: 'if 3 < 5; 10; else; 20; end', expected: 10 },
       { description: 'false branch', source: 'if 10 < 5; 10; else; 20; end', expected: 20 },
     ],
-    bytecodePreview: `0000 putobject 3\n0002 putobject 5\n0004 opt_lt\n0005 branchunless 2\n0007 putobject 10\n0009 jump 2\n0011 putobject 20\n0013 leave`,
+    bytecodePreview: `0000 putobject 3\n0002 putobject 5\n0004 opt_lt\n0005 branchunless 4\n0007 putobject 10\n0009 jump 2\n0011 putobject 20\n0013 leave`,
   },
 
   {
