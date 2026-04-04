@@ -1,14 +1,14 @@
 module Patch
   class Branchunless
     def self.call(vm, dst)
-      # TODO: Pop condition; if falsy (nil or false), call vm.add_pc(dst)
+      # TODO: Pop condition; if falsy (nil or false), jump by dst
       raise NotImplementedError, "Branchunless.call not implemented"
     end
   end
 
   class Jump
     def self.call(vm, dst)
-      # TODO: Unconditionally call vm.add_pc(dst)
+      # TODO: Unconditionally jump by dst
       raise NotImplementedError, "Jump.call not implemented"
     end
   end
