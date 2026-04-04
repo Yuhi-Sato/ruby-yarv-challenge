@@ -192,15 +192,8 @@ export const STEPS: StepConfig[] = [
       h('h3', null, 'Compiler: compile_binary_plus'),
       h('p', null,
         'This method compiles ', h('code', null, '+'), ' expressions like ', h('code', null, '1 + 2'),
-        '. The call flow looks like this:',
+        '. Compile the receiver first, then the arguments, and finally emit the instruction.',
       ),
-      h('pre', null, h('code', null,
-        'compile_binary_plus\n' +
-        '  1. compile_node(iseq, node.receiver)     → pushes 1\n' +
-        '  2. compile_node(iseq, node.arguments)    → dispatches to\n' +
-        '       compile_arguments_node               → pushes 2\n' +
-        '  3. iseq.emit(OptPlus)                    → pops both, pushes 3'
-      )),
     ),
     instructions: 'opt_plus · compile_arguments_node · compile_binary_plus',
     stub: step2Stub,
