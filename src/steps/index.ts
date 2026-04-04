@@ -259,7 +259,7 @@ export const STEPS: StepConfig[] = [
       ),
       h('ul', null,
         h('li', null, h('strong', null, 'SP (Stack Pointer)'), ' — top of the stack (where push/pop happen)'),
-        h('li', null, h('strong', null, 'EP (Environment Pointer)'), ' — always at ', h('code', null, 'SP - 1'), ', locals are below EP'),
+        h('li', null, h('strong', null, 'EP (Environment Pointer)'), ' — base pointer for local variables; locals are accessed by offset from EP'),
       ),
       h('p', null,
         'For ', h('code', null, 'x = 5; y = 10; x + y'), ':',
@@ -273,7 +273,7 @@ export const STEPS: StepConfig[] = [
         '     │  x = 5    │  ← offset 1  (older)\n' +
         '     └───────────┘\n' +
         '\n' +
-        'EP = SP - 1'
+        'EP marks the base of the locals area'
       )),
       h('p', null,
         'Instructions access locals by offset from EP. The older a variable, the larger its offset.',
