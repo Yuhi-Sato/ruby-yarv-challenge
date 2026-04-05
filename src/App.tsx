@@ -79,7 +79,7 @@ function App() {
 
   // Steps 1-7: 3-pane layout
   return (
-    <div className="flex flex-col h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+    <div className="flex flex-col h-dvh bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
       <Header />
       <StepNav
         currentStep={state.currentStep}

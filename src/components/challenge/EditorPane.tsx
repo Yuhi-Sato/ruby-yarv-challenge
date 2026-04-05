@@ -1,4 +1,5 @@
 import Editor from '@monaco-editor/react'
+import { useIsMobile } from '../../hooks/useIsMobile'
 
 interface EditorPaneProps {
   code: string
@@ -8,6 +9,8 @@ interface EditorPaneProps {
 }
 
 export function EditorPane({ code, onChange, onReset, isRunning }: EditorPaneProps) {
+  const isMobile = useIsMobile()
+
   const handleReset = () => {
     if (window.confirm('Reset code to the original stub? Your changes will be lost.')) {
       onReset()
@@ -29,22 +32,33 @@ export function EditorPane({ code, onChange, onReset, isRunning }: EditorPanePro
 
       {/* Editor */}
       <div className="flex-1 relative">
-        <Editor
-          height="100%"
-          language="ruby"
-          theme="vs-dark"
-          value={code}
-          onChange={(value) => onChange(value ?? '')}
-          options={{
-            minimap: { enabled: false },
-            fontSize: 13,
-            wordWrap: 'on',
-            lineNumbers: 'on',
-            tabSize: 2,
-            insertSpaces: true,
-            automaticLayout: true,
-          }}
-        />
+        {isMobile ? (
+          <textarea
+            value={code}
+            onChange={(e) => onChange(e.target.value)}
+            spellCheck={false}
+            autoCapitalize="off"
+            autoCorrect="off"
+            className="w-full h-full p-3 bg-[#1e1e1e] text-[#d4d4d4] font-mono text-sm leading-relaxed resize-none outline-none"
+          />
+        ) : (
+          <Editor
+            height="100%"
+            language="ruby"
+            theme="vs-dark"
+            value={code}
+            onChange={(value) => onChange(value ?? '')}
+            options={{
+              minimap: { enabled: false },
+              fontSize: 13,
+              wordWrap: 'on',
+              lineNumbers: 'on',
+              tabSize: 2,
+              insertSpaces: true,
+              automaticLayout: true,
+            }}
+          />
+        )}
 
         {/* Running overlay */}
         {isRunning && (
