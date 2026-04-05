@@ -18,13 +18,19 @@ class ChallengeTestRunner
         error: nil
       }
     rescue => e
+      location = ""
+      if e.backtrace
+        frame = e.backtrace.find { |f| f.include?("Patch") || f.include?("call") }
+        frame ||= e.backtrace.first
+        location = " (in #{frame})" if frame
+      end
       @results << {
         description: description,
         source: source,
         expected: expected.inspect,
         got: nil,
         passed: false,
-        error: e.message
+        error: "#{e.class}: #{e.message}#{location}"
       }
     end
   end
