@@ -120,6 +120,7 @@ function TutorialPaneInner({ step, result }: TutorialPaneProps) {
                       ['iseq.patch_at!(pc, Insn, offset)', 'Overwrite placeholder with actual instruction'],
                       ['iseq.size', 'Current iseq size'],
                       ['YRuby::Iseq.iseq_new_method(node)', 'Create method iseq from DefNode'],
+                      ['YRuby::CallData.new(mid:, argc:)', 'Create call data (mid: method name, argc: arg count)'],
                     ].map(([sig, desc]) => (
                       <tr key={sig} className="border-b border-gray-100 dark:border-gray-700/50">
                         <td className="p-2">
