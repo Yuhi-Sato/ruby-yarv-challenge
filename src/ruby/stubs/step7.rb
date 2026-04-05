@@ -1,6 +1,6 @@
 module Patch
   class Definemethod
-    def self.call(vm, mid, iseq)
+    def self.call(vm, mid, iseq) # mid = method ID (name as a symbol, e.g. :fib)
       # TODO: Register the method on the VM — check the API Reference
       raise NotImplementedError, "Definemethod.call not implemented"
     end
