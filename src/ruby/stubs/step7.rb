@@ -7,7 +7,7 @@ module Patch
   end
 
   class OptSendWithoutBlock
-    def self.call(vm, cd)
+    def self.call(vm, cd) # cd = call data (method name + argument count)
       # TODO: Dispatch the method call — check the API Reference
       raise NotImplementedError, "OptSendWithoutBlock.call not implemented"
     end
