@@ -159,8 +159,13 @@ $test_output.join("\\n")
       .filter(s => s.id >= 1)
       .sort((a, b) => a.id - b.id)
 
-    const accumulatedUserCode = allSteps
-      .map(s => state.userCode[s.id] ?? s.stub)
+    const labeledStepCode = allSteps
+      .map(s => {
+        const code = state.userCode[s.id] ?? s.stub
+        const isStub = state.userCode[s.id] == null || state.userCode[s.id] === s.stub
+        const marker = isStub ? ' (not yet implemented)' : ''
+        return `# --- ${s.title}${marker} ---\n${code}`
+      })
       .join('\n\n')
 
     return [
@@ -179,11 +184,8 @@ $test_output.join("\\n")
       '# === Patch Module Setup ===',
       challengePatchRb,
       '',
-      '# === Default Stubs (overridden by your code below) ===',
-      challengeResetRb,
-      '',
       '# === Your Implementation ===',
-      accumulatedUserCode,
+      labeledStepCode,
       '',
       '# === Demo ===',
       'vm = YRuby.new',
