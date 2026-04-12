@@ -6,12 +6,12 @@ module Patch
     end
   end
 
-  def compile_arguments_node(iseq, node)
+  def compile_arguments_node(iseq, node) # node: Prism::ArgumentsNode
     # TODO: Compile each argument in order
     raise NotImplementedError, "compile_arguments_node not implemented"
   end
 
-  def compile_binary_plus(iseq, node)
+  def compile_binary_plus(iseq, node) # node: Prism::CallNode
     # TODO: Compile the receiver, compile the arguments, then emit OptPlus
     raise NotImplementedError, "compile_binary_plus not implemented"
   end

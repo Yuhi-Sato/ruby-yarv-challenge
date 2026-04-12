@@ -6,7 +6,7 @@ module Patch
     end
   end
 
-  def compile_binary_lt(iseq, node)
+  def compile_binary_lt(iseq, node) # node: Prism::CallNode
     # TODO: Compile the receiver, compile the arguments, then emit OptLt
     raise NotImplementedError, "compile_binary_lt not implemented"
   end

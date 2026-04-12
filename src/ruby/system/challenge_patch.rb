@@ -79,43 +79,43 @@ module Patch
   # ---- Per-node methods (all raise NotImplementedError) ----
   # Participants override these in their step stubs.
 
-  def compile_integer_node(iseq, node)
+  def compile_integer_node(iseq, node) # node: Prism::IntegerNode
     raise NotImplementedError, "compile_integer_node not implemented"
   end
 
-  def compile_arguments_node(iseq, node)
+  def compile_arguments_node(iseq, node) # node: Prism::ArgumentsNode
     raise NotImplementedError, "compile_arguments_node not implemented"
   end
 
-  def compile_binary_plus(iseq, node)
+  def compile_binary_plus(iseq, node) # node: Prism::CallNode
     raise NotImplementedError, "compile_binary_plus not implemented"
   end
 
-  def compile_binary_minus(iseq, node)
+  def compile_binary_minus(iseq, node) # node: Prism::CallNode
     raise NotImplementedError, "compile_binary_minus not implemented"
   end
 
-  def compile_local_var_read(iseq, node)
+  def compile_local_var_read(iseq, node) # node: Prism::LocalVariableReadNode
     raise NotImplementedError, "compile_local_var_read not implemented"
   end
 
-  def compile_local_var_write(iseq, node)
+  def compile_local_var_write(iseq, node) # node: Prism::LocalVariableWriteNode
     raise NotImplementedError, "compile_local_var_write not implemented"
   end
 
-  def compile_binary_lt(iseq, node)
+  def compile_binary_lt(iseq, node) # node: Prism::CallNode
     raise NotImplementedError, "compile_binary_lt not implemented"
   end
 
-  def compile_conditional_node(iseq, node)
+  def compile_conditional_node(iseq, node) # node: Prism::IfNode
     raise NotImplementedError, "compile_conditional_node not implemented"
   end
 
-  def compile_def_node(iseq, node)
+  def compile_def_node(iseq, node) # node: Prism::DefNode
     raise NotImplementedError, "compile_def_node not implemented"
   end
 
-  def compile_general_call(iseq, node)
+  def compile_general_call(iseq, node) # node: Prism::CallNode
     raise NotImplementedError, "compile_general_call not implemented"
   end
 end

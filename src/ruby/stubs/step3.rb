@@ -6,7 +6,7 @@ module Patch
     end
   end
 
-  def compile_binary_minus(iseq, node)
+  def compile_binary_minus(iseq, node) # node: Prism::CallNode
     # TODO: Compile the receiver, compile the arguments, then emit OptMinus
     raise NotImplementedError, "compile_binary_minus not implemented"
   end

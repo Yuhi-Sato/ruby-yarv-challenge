@@ -13,12 +13,12 @@ module Patch
     end
   end
 
-  def compile_def_node(iseq, node)
+  def compile_def_node(iseq, node) # node: Prism::DefNode
     # TODO: Create a method iseq, emit Definemethod to register it, emit the return value (method name)
     raise NotImplementedError, "compile_def_node not implemented"
   end
 
-  def compile_general_call(iseq, node)
+  def compile_general_call(iseq, node) # node: Prism::CallNode
     # TODO: Emit receiver (self), compile arguments, emit the call instruction with CallData
     raise NotImplementedError, "compile_general_call not implemented"
   end
