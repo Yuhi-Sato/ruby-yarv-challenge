@@ -14,7 +14,7 @@ import { STEPS } from './steps'
 
 function App() {
   const { vmRef, status, error } = useRubyVM()
-  const { state, goToStep, updateCode, runTests } = useChallenge({ vmRef })
+  const { state, goToStep, updateCode, runTests, downloadCode } = useChallenge({ vmRef })
   const currentStep = STEPS.find(s => s.id === state.currentStep)
   const runButtonRef = useRef<HTMLButtonElement>(null)
 
@@ -109,6 +109,7 @@ function App() {
         onRun={runTests}
         isRunning={state.isRunning}
         runButtonRef={runButtonRef}
+        onDownload={downloadCode}
       />
     </div>
   )

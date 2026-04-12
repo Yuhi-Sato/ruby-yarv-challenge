@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react'
+import { useState, useCallback, useEffect, useMemo } from 'react'
 import type { ChallengeState, RunResult } from '../types'
 import { STEPS } from '../steps'
 import { parseRunResult, rubyLiteral } from '../lib/parseRunResult'
@@ -154,10 +154,83 @@ $test_output.join("\\n")
     }
   }, [vmRef, state.userCode, state.currentStep, state.isRunning])
 
+  const downloadableCode = useMemo(() => {
+    const allSteps = STEPS
+      .filter(s => s.id >= 1)
+      .sort((a, b) => a.id - b.id)
+
+    const labeledStepCode = allSteps
+      .map(s => {
+        const code = state.userCode[s.id] ?? s.stub
+        const isStub = state.userCode[s.id] == null || state.userCode[s.id] === s.stub
+        const marker = isStub ? ' (not yet implemented)' : ''
+        return `# --- ${s.title}${marker} ---\n${code}`
+      })
+      .join('\n\n')
+
+    return [
+      '# YARV Challenge - Your Implementation',
+      '# ',
+      '# Prerequisites:',
+      '#   gem install yruby',
+      '# ',
+      '# Run:',
+      '#   ruby yarv_challenge.rb',
+      '#',
+      '',
+      "require 'prism'",
+      "require 'yruby'",
+      '',
+      '# === Patch Module Setup ===',
+      challengePatchRb,
+      '',
+      '# === Your Implementation ===',
+      labeledStepCode,
+      '',
+      '# === Demo ===',
+      'vm = YRuby.new',
+      '',
+      '# Simple arithmetic',
+      'puts "1 + 2 = #{vm.exec(\'1 + 2\')}"',
+      '',
+      '# Fibonacci (requires all steps completed)',
+      'fib_source = <<~RUBY',
+      '  def fib(n)',
+      '    if n < 2',
+      '      n',
+      '    else',
+      '      fib(n - 1) + fib(n - 2)',
+      '    end',
+      '  end',
+      '  fib(10)',
+      'RUBY',
+      '',
+      'begin',
+      '  puts "fib(10) = #{vm.exec(fib_source)}"',
+      'rescue => e',
+      '  puts "fib(10) not yet available: #{e.message}"',
+      'end',
+      '',
+    ].join('\n')
+  }, [state.userCode])
+
+  const downloadCode = useCallback(() => {
+    const blob = new Blob([downloadableCode], { type: 'text/x-ruby;charset=utf-8' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = 'yarv_challenge.rb'
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+    URL.revokeObjectURL(url)
+  }, [downloadableCode])
+
   return {
     state,
     goToStep,
     updateCode,
     runTests,
+    downloadCode,
   }
 }
