@@ -20,12 +20,12 @@ module Patch
     end
   end
 
-  def compile_local_var_read(iseq, node)
+  def compile_local_var_read(iseq, node) # node: Prism::LocalVariableReadNode
     # TODO: Look up node.name in @index_lookup_table, emit Getlocal with that index
     raise NotImplementedError, "compile_local_var_read not implemented"
   end
 
-  def compile_local_var_write(iseq, node)
+  def compile_local_var_write(iseq, node) # node: Prism::LocalVariableWriteNode
     # TODO: Compile node.value, emit Dup, look up index, emit Setlocal
     raise NotImplementedError, "compile_local_var_write not implemented"
   end

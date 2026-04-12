@@ -13,7 +13,7 @@ module Patch
     end
   end
 
-  def compile_conditional_node(iseq, node)
+  def compile_conditional_node(iseq, node) # node: Prism::IfNode
     # See the tutorial panel for the full patching algorithm
     raise NotImplementedError, "compile_conditional_node not implemented"
   end

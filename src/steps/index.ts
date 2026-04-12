@@ -192,7 +192,7 @@ export const STEPS: StepConfig[] = [
       ),
       h('h3', null, 'Compiler: compile_binary_plus'),
       h('p', null,
-        'This method compiles ', h('code', null, '+'), ' expressions like ', h('code', null, '1 + 2'),
+        'This method receives a ', h('code', null, 'Prism::CallNode'), ' and compiles ', h('code', null, '+'), ' expressions like ', h('code', null, '1 + 2'),
         '. Compile the receiver first, then the arguments, and finally emit the instruction.',
       ),
     ),
@@ -231,8 +231,9 @@ export const STEPS: StepConfig[] = [
       )),
       h('h3', null, 'Compiler: compile_binary_minus'),
       h('p', null,
-        h('code', null, '10 - 3'), ' is also a CallNode: ', h('code', null, '10.-(3)'),
-        '. Same compile pattern as Step 2 — compile receiver, arguments, then emit the instruction.'
+        'This method receives a ', h('code', null, 'Prism::CallNode'), '. ',
+        h('code', null, '10 - 3'), ' is parsed as ', h('code', null, '10.-(3)'),
+        ' — same structure as Step 2. Compile the receiver, arguments, then emit the instruction.'
       ),
     ),
     instructions: 'opt_minus · compile_binary_minus',
@@ -348,8 +349,9 @@ export const STEPS: StepConfig[] = [
       ),
       h('h3', null, 'Compiler: compile_binary_lt'),
       h('p', null,
-        h('code', null, '3 < 5'), ' is also a method call: ', h('code', null, '3.<(5)'),
-        '. Same compile pattern as Steps 2 and 3 — compile receiver, arguments, then emit the instruction.'
+        'This method receives a ', h('code', null, 'Prism::CallNode'), '. ',
+        h('code', null, '3 < 5'), ' is parsed as ', h('code', null, '3.<(5)'),
+        ' — same structure as Steps 2 and 3. Compile the receiver, arguments, then emit the instruction.'
       ),
       h('p', null,
         'The result (', h('code', null, 'true'), ' or ', h('code', null, 'false'), ') will be consumed by branch instructions in Step 6.'

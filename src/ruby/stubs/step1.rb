@@ -6,7 +6,7 @@ module Patch
     end
   end
 
-  def compile_integer_node(iseq, node)
+  def compile_integer_node(iseq, node) # node: Prism::IntegerNode
     # TODO: Emit a Putobject instruction with node.value
     raise NotImplementedError, "compile_integer_node not implemented"
   end
