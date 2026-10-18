@@ -14,6 +14,10 @@
 }
 
 /* Step description styles for createElement-generated content */
+.step-description {
+  color: var(--color-gray-900, #111827);
+}
+
 .step-description h2 {
   font-size: 1.25rem;
   font-weight: 700;
@@ -70,6 +74,10 @@
 }
 
 @media (prefers-color-scheme: dark) {
+  .step-description {
+    color: #f3f4f6;
+  }
+
   .step-description h2 {
     color: #f3f4f6;
   }
